@@ -84,7 +84,7 @@ Principais grupos de endpoints:
 
 ## 👥 Projeto acadêmico
 
-Projeto desenvolvido na disciplina de Projeto Integrador do curso de Sistemas para Internet - UAPI/UESPI.
+Projeto desenvolvido na disciplina de Projeto Integrador do curso de Sistemas e Tecnologias para Internet - UAPI/UESPI.
 
 ### Equipe Alpha
 
