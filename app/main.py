@@ -1,8 +1,10 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy.orm import Session
+from typing import List
 
-from .database import Base, engine
-from . import models
+from .database import Base, engine, get_db
+from . import models, schemas
 from .routes import produtos, movimentacoes, alertas, usuarios
 
 
@@ -41,8 +43,6 @@ def root():
     }
 
 
-@app.get("/api/inventario")
-def inventario():
-    return {
-        "message": "Utilize /api/produtos para consultar o inventário."
-    }
+@app.get("/api/inventario", response_model=List[schemas.ProdutoResponse])
+def inventario(db: Session = Depends(get_db)):
+    return db.query(models.Produto).all()
