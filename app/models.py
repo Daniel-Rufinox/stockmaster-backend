@@ -1,3 +1,4 @@
+
 from sqlalchemy import Column, Integer, String, Float, Date, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 from datetime import datetime
@@ -54,3 +55,15 @@ class Usuario(Base):
     usuario = Column(String, unique=True, nullable=False, index=True)
     senha = Column(String, nullable=False)
     perfil = Column(String, nullable=False, default="Operador")
+
+
+class Fornecedor(Base):
+    __tablename__ = "fornecedores"
+
+    id = Column(Integer, primary_key=True, index=True)
+    nome = Column(String, nullable=False, index=True)
+    cnpj = Column(String, unique=True, nullable=True)
+    telefone = Column(String, nullable=True)
+    email = Column(String, nullable=True)
+    endereco = Column(String, nullable=True)
+    contato = Column(String, nullable=True)
