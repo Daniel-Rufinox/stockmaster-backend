@@ -1,5 +1,6 @@
+
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from typing import List
 
 from ..database import get_db
@@ -117,11 +118,30 @@ def registrar_saida(
 
 @router.get(
     "/",
-    response_model=List[schemas.MovimentacaoResponse]
+    response_model=List[schemas.MovimentacaoHistoricoResponse]
 )
 def listar_movimentacoes(
     db: Session = Depends(get_db)
 ):
-    return db.query(models.Movimentacao).order_by(
+    movimentacoes = db.query(models.Movimentacao).options(
+        joinedload(models.Movimentacao.produto)
+    ).order_by(
         models.Movimentacao.data.desc()
     ).all()
+
+    resultado = []
+
+    for mov in movimentacoes:
+        resultado.append({
+            "id": mov.id,
+            "produto_id": mov.produto_id,
+            "produto_nome": mov.produto.nome,
+            "produto_codigo": mov.produto.codigo,
+            "tipo": mov.tipo,
+            "quantidade": mov.quantidade,
+            "motivo": mov.motivo,
+            "observacao": mov.observacao,
+            "data": mov.data
+        })
+
+    return resultado
