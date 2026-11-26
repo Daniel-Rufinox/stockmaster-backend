@@ -1,3 +1,4 @@
+
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
@@ -5,7 +6,13 @@ from typing import List
 
 from .database import Base, engine, get_db
 from . import models, schemas
-from .routes import produtos, movimentacoes, alertas, usuarios
+from .routes import (
+    produtos,
+    movimentacoes,
+    alertas,
+    usuarios,
+    fornecedores
+)
 
 
 # Cria as tabelas no banco de dados
@@ -15,7 +22,7 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI(
     title="StockMaster API",
     description="API Back-End do sistema StockMaster para gerenciamento e controle de estoque.",
-    version="1.0.0"
+    version="1.1.0"
 )
 
 
@@ -29,11 +36,12 @@ app.add_middleware(
 )
 
 
-# Rotas
+# Registro das rotas
 app.include_router(produtos.router)
 app.include_router(movimentacoes.router)
 app.include_router(alertas.router)
 app.include_router(usuarios.router)
+app.include_router(fornecedores.router)
 
 
 @app.get("/")
@@ -43,6 +51,9 @@ def root():
     }
 
 
-@app.get("/api/inventario", response_model=List[schemas.ProdutoResponse])
+@app.get(
+    "/api/inventario",
+    response_model=List[schemas.ProdutoResponse]
+)
 def inventario(db: Session = Depends(get_db)):
     return db.query(models.Produto).all()
