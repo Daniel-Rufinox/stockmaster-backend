@@ -1,3 +1,4 @@
+ 
 from pydantic import BaseModel, ConfigDict
 from datetime import date, datetime
 from typing import Optional
@@ -70,6 +71,11 @@ class MovimentacaoResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
+class MovimentacaoHistoricoResponse(MovimentacaoResponse):
+    produto_nome: str
+    produto_codigo: str
+
+
 # =========================
 # USUÁRIOS
 # =========================
@@ -100,3 +106,35 @@ class UsuarioResponse(BaseModel):
 class LoginRequest(BaseModel):
     usuario: str
     senha: str
+
+
+# =========================
+# FORNECEDORES
+# =========================
+
+class FornecedorBase(BaseModel):
+    nome: str
+    cnpj: Optional[str] = None
+    telefone: Optional[str] = None
+    email: Optional[str] = None
+    endereco: Optional[str] = None
+    contato: Optional[str] = None
+
+
+class FornecedorCreate(FornecedorBase):
+    pass
+
+
+class FornecedorUpdate(BaseModel):
+    nome: Optional[str] = None
+    cnpj: Optional[str] = None
+    telefone: Optional[str] = None
+    email: Optional[str] = None
+    endereco: Optional[str] = None
+    contato: Optional[str] = None
+
+
+class FornecedorResponse(FornecedorBase):
+    id: int
+
+    model_config = ConfigDict(from_attributes=True)
