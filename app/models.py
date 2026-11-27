@@ -6,6 +6,13 @@ from datetime import datetime
 from .database import Base
 
 
+class Categoria(Base):
+    __tablename__ = "categorias"
+
+    id = Column(Integer, primary_key=True, index=True)
+    nome = Column(String, unique=True, nullable=False, index=True)
+
+
 class Produto(Base):
     __tablename__ = "produtos"
 
