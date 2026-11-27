@@ -1,4 +1,4 @@
- 
+
 from pydantic import BaseModel, ConfigDict
 from datetime import date, datetime
 from typing import Optional
@@ -136,5 +136,24 @@ class FornecedorUpdate(BaseModel):
 
 class FornecedorResponse(FornecedorBase):
     id: int
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+# =========================
+# CATEGORIAS
+# =========================
+
+class CategoriaCreate(BaseModel):
+    nome: str
+
+
+class CategoriaUpdate(BaseModel):
+    nome: Optional[str] = None
+
+
+class CategoriaResponse(BaseModel):
+    id: int
+    nome: str
 
     model_config = ConfigDict(from_attributes=True)
