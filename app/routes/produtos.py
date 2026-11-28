@@ -1,3 +1,4 @@
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List, Optional
@@ -121,6 +122,16 @@ def excluir_produto(
         raise HTTPException(
             status_code=404,
             detail="Produto não encontrado."
+        )
+
+    movimentacao_existente = db.query(models.Movimentacao).filter(
+        models.Movimentacao.produto_id == produto_id
+    ).first()
+
+    if movimentacao_existente:
+        raise HTTPException(
+            status_code=409,
+            detail="Não é possível excluir este produto: existem movimentações vinculadas a ele. O histórico foi preservado."
         )
 
     db.delete(produto)
